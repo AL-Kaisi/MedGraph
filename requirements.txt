@@ -1,0 +1,3 @@
+pytest
+neo4j
+streamlit

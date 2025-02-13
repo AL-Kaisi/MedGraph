@@ -1,3 +1,7 @@
 pytest
 neo4j
 streamlit
+pyvis
+networkx
+streamlit-components
+python-dotenv

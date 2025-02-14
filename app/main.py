@@ -3,11 +3,14 @@ from pyvis.network import Network
 from neo4j import GraphDatabase
 import streamlit as st  # Import Streamlit
 import os
+from dotenv import load_dotenv
 
-# Neo4j connection details
-uri = "neo4j+s://993d4543.databases.neo4j.io"
-username = "neo4j"
-password = "lXHyNSgVTaomp2g7vySDtJ7uK3qK3Z73t2BERLaKWXA"
+load_dotenv()
+
+# Now you can access the environment variables
+uri = os.getenv("NEO4J_URI")
+username = os.getenv("NEO4J_USERNAME")
+password = os.getenv("NEO4J_PASSWORD")
 
 # Create a Neo4j driver
 driver = GraphDatabase.driver(uri, auth=(username, password))
@@ -25,10 +28,18 @@ def create_disease(name, description):
 def create_relationship(person_name, disease_name):
     """Creates a relationship between Person and Disease in Neo4j."""
     with driver.session() as session:
-        session.run("""
-            MATCH (p:Person {name: $person_name}), (d:Disease {name: $disease_name})
-            CREATE (p)-[:HAS_DISEASE]->(d)
+        # Check if the relationship already exists
+        result = session.run("""
+            MATCH (p:Person {name: $person_name})-[:HAS_DISEASE]->(d:Disease {name: $disease_name})
+            RETURN COUNT(*) AS count
         """, person_name=person_name, disease_name=disease_name)
+
+        # If the relationship doesn't exist, create it
+        if result.single()['count'] == 0:
+            session.run("""
+                MATCH (p:Person {name: $person_name}), (d:Disease {name: $disease_name})
+                CREATE (p)-[:HAS_DISEASE]->(d)
+            """, person_name=person_name, disease_name=disease_name)
 
 def fetch_person_diseases(name):
     """Fetch diseases related to a person."""
@@ -114,22 +125,3 @@ class GraphVisualizer:
         except Exception as e:
             print(f"Error while generating the graph: {e}")
             st.error("There was an issue generating the graph visualization.")
-
-
-if __name__ == "__main__":
-    # Example usage
-    create_person("Mohamed", 40)
-    create_disease("diabetes", "diabetes")
-    create_relationship("Mohamed", "diabetes")
-    
-    # Instantiate the GraphVisualizer
-    graph_visualizer = GraphVisualizer("Mohamed")
-    
-    # Fetch data, build the graph, and visualize
-    graph_visualizer.fetch_data()
-    graph_visualizer.build_graph()
-    graph_visualizer.visualize()
-
-    diseases = fetch_person_diseases("Mohamed")
-    for disease in diseases:
-        print(f"Disease: {disease['d.name']}, Description: {disease['d.description']}")

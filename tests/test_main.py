@@ -61,4 +61,5 @@ def test_graph_visualizer(setup_neo4j):
     # (e.g., 'Alice' -> 'HIV' relationship)
     assert 'Alice' in graph_visualizer.graph.nodes
     assert 'HIV' in graph_visualizer.graph.nodes
-    assert graph_visualizer.graph.has_edge('Alice', 'HIV
+    assert graph_visualizer.graph.has_edge('Alice', 'HIV')  # Close the string literal properly
+

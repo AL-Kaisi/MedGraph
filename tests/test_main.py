@@ -6,13 +6,16 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../a
 
 import pytest
 from app.main import create_person, create_disease, create_relationship, fetch_person_diseases, GraphVisualizer
+from app.main import driver  # Assuming 'driver' is defined for Neo4j session management
+
 
 # Fixture to clear data before tests run (optional)
 @pytest.fixture(scope="module")
 def setup_neo4j():
     # Clear existing data before tests run
-    # This can be implemented to ensure the database is clean for each test
-    pass
+    with driver.session() as session:
+        session.run("MATCH (n) DETACH DELETE n")  # Clear the database
+
 
 def test_create_person(setup_neo4j):
     # Create a new person
@@ -23,6 +26,7 @@ def test_create_person(setup_neo4j):
     
     # Assert that there are no diseases for Bob
     assert len(result) == 0
+
 
 def test_create_relationship(setup_neo4j):
     # Create a new person and disease
@@ -39,6 +43,7 @@ def test_create_relationship(setup_neo4j):
     assert len(diseases) == 1
     assert diseases[0]['d.name'] == "Tuberculosis"
     assert diseases[0]['d.description'] == "Infectious bacterial disease"
+
 
 def test_graph_visualizer(setup_neo4j):
     # Create a person and diseases, and add relationships for graph visualization
@@ -61,5 +66,4 @@ def test_graph_visualizer(setup_neo4j):
     # (e.g., 'Alice' -> 'HIV' relationship)
     assert 'Alice' in graph_visualizer.graph.nodes
     assert 'HIV' in graph_visualizer.graph.nodes
-    assert graph_visualizer.graph.has_edge('Alice', 'HIV')  # Close the string literal properly
-
+    assert graph_visualizer.graph.has_edge('Alice', 'HIV')

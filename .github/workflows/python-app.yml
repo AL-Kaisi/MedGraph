@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9, 3.10]  # Specify only the major and minor version
+        python-version: [3.9, 3.10]  # Use 3.9 and 3.10 to avoid 3.8 issues
 
     steps:
     - name: Checkout code
@@ -23,6 +23,10 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+
+    - name: Clear pip cache
+      run: |
+        rm -rf ~/.cache/pip  # Clear old pip cache
 
     - name: Install dependencies
       run: |
@@ -53,7 +57,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/your-docker-image-name .
+        docker build -t your-docker-image-name .
 
     - name: Login to Docker Hub
       uses: docker/login-action@v2
@@ -63,4 +67,4 @@ jobs:
 
     - name: Push Docker image
       run: |
-        docker push ${{ secrets.DOCKER_USERNAME }}/your-docker-image-name
+        docker push your-docker-image-name

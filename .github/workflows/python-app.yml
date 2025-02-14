@@ -31,7 +31,7 @@ jobs:
           pytest  # Run your tests using Pytest
 
       - name: Upload test results as an artifact (optional)
-        uses: actions/upload-artifact@v2  # This step uploads the test results as an artifact
+        uses: actions/upload-artifact@v3  # Use the updated v3 version
         with:
           name: test-results
           path: results/  # Adjust this path to where your test results are saved, if necessary

@@ -26,8 +26,8 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python -m pip3 install --upgrade pip3
-        pip3 install -r requirements.txt
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
 
     - name: Set up environment variables for Neo4j
       run: |
@@ -53,7 +53,7 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t your-docker-image-name .
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/your-docker-image-name .
 
     - name: Login to Docker Hub
       uses: docker/login-action@v2
@@ -63,4 +63,4 @@ jobs:
 
     - name: Push Docker image
       run: |
-        docker push your-docker-image-name
+        docker push ${{ secrets.DOCKER_USERNAME }}/your-docker-image-name

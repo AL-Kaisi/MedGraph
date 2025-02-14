@@ -39,6 +39,9 @@ def test_create_relationship(setup_neo4j):
     # Fetch diseases for Charlie
     diseases = fetch_person_diseases("Charlie")
     
+    # Debugging: Check the diseases fetched
+    print(f"Test Fetch Diseases for Charlie: {diseases}")
+    
     # Assert that Charlie has 1 disease, and that it is Tuberculosis
     assert len(diseases) == 1
     assert diseases[0]['d.name'] == "Tuberculosis"

@@ -34,12 +34,19 @@ def create_relationship(person_name, disease_name):
             RETURN COUNT(*) AS count
         """, person_name=person_name, disease_name=disease_name)
 
+        # Debugging: Check if the relationship already exists
+        count = result.single()['count']
+        print(f"Checking existing relationship for {person_name} and {disease_name}. Found count: {count}")
+
         # If the relationship doesn't exist, create it
-        if result.single()['count'] == 0:
+        if count == 0:
             session.run("""
                 MATCH (p:Person {name: $person_name}), (d:Disease {name: $disease_name})
                 CREATE (p)-[:HAS_DISEASE]->(d)
             """, person_name=person_name, disease_name=disease_name)
+            print(f"Created relationship between {person_name} and {disease_name}")
+        else:
+            print(f"Relationship already exists between {person_name} and {disease_name}")
 
 def fetch_person_diseases(name):
     """Fetch diseases related to a person."""

@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8, 3.9, 3.10]  # Use 3.9 instead of 3.9.6
+        python-version: [3.8, 3.9, 3.10]  # Specify only the major and minor version
 
     steps:
     - name: Checkout code

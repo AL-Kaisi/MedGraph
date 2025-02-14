@@ -1,7 +1,8 @@
-pytest
 neo4j
-streamlit
-pyvis
-networkx
-streamlit-components
 python-dotenv
+streamlit==1.42.0
+pyvis==0.3.2
+networkx==3.2.1
+streamlit==1.42.0
+
+

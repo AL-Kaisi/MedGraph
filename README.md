@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-Certainly! Here's an example **README.md** file for your project. You can customize it further based on your specific requirements.
-
----
-=======
->>>>>>> 1e70afa9863bbfcfe31421ce6eb8af755344e0d0
-
 # Graph RAG - Neo4j Integration
 
 ## Overview

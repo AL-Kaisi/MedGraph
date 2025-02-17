@@ -142,12 +142,3 @@ Feel free to fork this project and submit a pull request if you'd like to contri
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
-
-### Conclusion:
-This **README.md** provides a comprehensive guide for setting up, running, and contributing to your **Graph RAG - Neo4j Integration** project. You can customize it further based on any additional features or configurations specific to your project.
-<<<<<<< HEAD
-=======
-
-Let me know if you need further modifications or assistance!
->>>>>>> 1e70afa9863bbfcfe31421ce6eb8af755344e0d0

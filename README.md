@@ -1,4 +1,4 @@
-# Graph RAG - Neo4j Integration
+# MedGraph
 
 ## Overview
 

@@ -19,29 +19,33 @@ def setup_neo4j():
 
 def test_create_person(setup_neo4j):
     # Create a new person
-    create_person("Bob", 25)
-    
+    success, message = create_person("Bob", 25)
+    assert success == True
+
     # Fetch diseases for Bob (Bob should not have any diseases yet)
     result = fetch_person_diseases("Bob")
-    
+
     # Assert that there are no diseases for Bob
     assert len(result) == 0
 
 
 def test_create_relationship(setup_neo4j):
     # Create a new person and disease
-    create_person("Charlie", 40)
-    create_disease("Tuberculosis", "Infectious bacterial disease")
-    
+    success1, msg1 = create_person("Charlie", 40)
+    success2, msg2 = create_disease("Tuberculosis", "Infectious bacterial disease")
+    assert success1 == True
+    assert success2 == True
+
     # Create a relationship between Charlie and Tuberculosis
-    create_relationship("Charlie", "Tuberculosis")
-    
+    success3, msg3 = create_relationship("Charlie", "Tuberculosis")
+    assert success3 == True
+
     # Fetch diseases for Charlie
     diseases = fetch_person_diseases("Charlie")
-    
+
     # Debugging: Check the diseases fetched
     print(f"Test Fetch Diseases for Charlie: {diseases}")
-    
+
     # Assert that Charlie has 1 disease, and that it is Tuberculosis
     assert len(diseases) == 1
     assert diseases[0]['d.name'] == "Tuberculosis"
@@ -49,10 +53,13 @@ def test_create_relationship(setup_neo4j):
 
 
 def test_graph_visualizer(setup_neo4j):
-    # Create a person and diseases, and add relationships for graph visualization
-    create_person("Alice", 30)
-    create_disease("HIV", "Human Immunodeficiency Virus")
-    create_relationship("Alice", "HIV")
+    # Create a person and diseases, and add relationships for graph visualisation
+    success1, msg1 = create_person("Alice", 30)
+    success2, msg2 = create_disease("HIV", "Human Immunodeficiency Virus")
+    success3, msg3 = create_relationship("Alice", "HIV")
+    assert success1 == True
+    assert success2 == True
+    assert success3 == True
 
     # Create an instance of GraphVisualizer for the person Alice
     graph_visualizer = GraphVisualizer("Alice")
@@ -61,7 +68,7 @@ def test_graph_visualizer(setup_neo4j):
     graph_visualizer.fetch_data()
     graph_visualizer.build_graph()
     
-    # Visualize the graph (this will generate an HTML file that is shown in Streamlit)
+    # Visualise the graph (this will generate an HTML file that is shown in Gradio)
     graph_visualizer.visualize()
     
     # You can also add additional assertions to ensure the graph is correct, e.g., 

@@ -17,51 +17,100 @@ driver = GraphDatabase.driver(uri, auth=(username, password))
 
 def create_person(name, age):
     """Creates a Person node in Neo4j."""
-    with driver.session() as session:
-        session.run("CREATE (a:Person {name: $name, age: $age})", name=name, age=age)
+    try:
+        with driver.session() as session:
+            # Check if person already exists
+            result = session.run("MATCH (p:Person {name: $name}) RETURN p", name=name)
+            if result.single():
+                return False, f"Person '{name}' already exists"
+
+            session.run("CREATE (a:Person {name: $name, age: $age})", name=name, age=age)
+            return True, f"Successfully created person '{name}'"
+    except Exception as e:
+        return False, f"Error creating person: {str(e)}"
 
 def create_disease(name, description):
     """Creates a Disease node in Neo4j."""
-    with driver.session() as session:
-        session.run("CREATE (d:Disease {name: $name, description: $description})", name=name, description=description)
+    try:
+        with driver.session() as session:
+            # Check if disease already exists
+            result = session.run("MATCH (d:Disease {name: $name}) RETURN d", name=name)
+            if result.single():
+                return False, f"Disease '{name}' already exists"
+
+            session.run("CREATE (d:Disease {name: $name, description: $description})", name=name, description=description)
+            return True, f"Successfully created disease '{name}'"
+    except Exception as e:
+        return False, f"Error creating disease: {str(e)}"
 
 def create_relationship(person_name, disease_name):
     """Creates a relationship between Person and Disease in Neo4j."""
-    with driver.session() as session:
-        # Check if the relationship already exists
-        result = session.run("""
-            MATCH (p:Person {name: $person_name})-[:HAS_DISEASE]->(d:Disease {name: $disease_name})
-            RETURN COUNT(*) AS count
-        """, person_name=person_name, disease_name=disease_name)
+    try:
+        with driver.session() as session:
+            # Check if person exists
+            person_result = session.run("MATCH (p:Person {name: $name}) RETURN p", name=person_name)
+            if not person_result.single():
+                return False, f"Person '{person_name}' does not exist"
 
-        # Debugging: Check if the relationship already exists
-        count = result.single()['count']
-        print(f"Checking existing relationship for {person_name} and {disease_name}. Found count: {count}")
+            # Check if disease exists
+            disease_result = session.run("MATCH (d:Disease {name: $name}) RETURN d", name=disease_name)
+            if not disease_result.single():
+                return False, f"Disease '{disease_name}' does not exist"
 
-        # If the relationship doesn't exist, create it
-        if count == 0:
-            session.run("""
-                MATCH (p:Person {name: $person_name}), (d:Disease {name: $disease_name})
-                CREATE (p)-[:HAS_DISEASE]->(d)
+            # Check if the relationship already exists
+            result = session.run("""
+                MATCH (p:Person {name: $person_name})-[:HAS_DISEASE]->(d:Disease {name: $disease_name})
+                RETURN COUNT(*) AS count
             """, person_name=person_name, disease_name=disease_name)
-            print(f"Created relationship between {person_name} and {disease_name}")
-        else:
-            print(f"Relationship already exists between {person_name} and {disease_name}")
+
+            count = result.single()['count']
+
+            # If the relationship doesn't exist, create it
+            if count == 0:
+                session.run("""
+                    MATCH (p:Person {name: $person_name}), (d:Disease {name: $disease_name})
+                    CREATE (p)-[:HAS_DISEASE]->(d)
+                """, person_name=person_name, disease_name=disease_name)
+                return True, f"Successfully created relationship between '{person_name}' and '{disease_name}'"
+            else:
+                return False, f"Relationship already exists between '{person_name}' and '{disease_name}'"
+    except Exception as e:
+        return False, f"Error creating relationship: {str(e)}"
 
 def fetch_person_diseases(name):
     """Fetch diseases related to a person."""
-    with driver.session() as session:
-        result = session.run("""
-            MATCH (p:Person {name: $name})-[:HAS_DISEASE]->(d:Disease)
-            RETURN d.name AS disease_name, d.description AS disease_description
-        """, name=name)
-        
-        diseases = [{"d.name": record["disease_name"], "d.description": record["disease_description"]} for record in result]
-        
-        # Debugging output
-        print(f"Fetched diseases for {name}: {diseases}")
-        
-        return diseases
+    try:
+        with driver.session() as session:
+            result = session.run("""
+                MATCH (p:Person {name: $name})-[:HAS_DISEASE]->(d:Disease)
+                RETURN d.name AS disease_name, d.description AS disease_description
+            """, name=name)
+
+            diseases = [{"d.name": record["disease_name"], "d.description": record["disease_description"]} for record in result]
+            return diseases
+    except Exception as e:
+        print(f"Error fetching diseases: {str(e)}")
+        return []
+
+def get_all_persons():
+    """Get all persons in the database."""
+    try:
+        with driver.session() as session:
+            result = session.run("MATCH (p:Person) RETURN p.name AS name, p.age AS age ORDER BY p.name")
+            return [{"name": record["name"], "age": record["age"]} for record in result]
+    except Exception as e:
+        print(f"Error fetching persons: {str(e)}")
+        return []
+
+def get_all_diseases():
+    """Get all diseases in the database."""
+    try:
+        with driver.session() as session:
+            result = session.run("MATCH (d:Disease) RETURN d.name AS name, d.description AS description ORDER BY d.name")
+            return [{"name": record["name"], "description": record["description"]} for record in result]
+    except Exception as e:
+        print(f"Error fetching diseases: {str(e)}")
+        return []
 
 
 class GraphVisualizer:

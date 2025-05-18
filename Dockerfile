@@ -11,8 +11,8 @@ COPY . /app
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Expose port 8501 for Streamlit
+# Expose port 8501 for Gradio
 EXPOSE 8501
 
-# Run the Streamlit app
-CMD ["streamlit", "run", "app/streamlit_app.py"]
+# Run the Gradio app
+CMD ["python", "app/gradio_app.py"]

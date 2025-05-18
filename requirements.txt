@@ -1,9 +1,10 @@
 neo4j
 pytest==8.3.4
-streamlit==1.42.0
+gradio==4.19.2
 pyvis==0.3.2
 networkx==3.2.1
 python-dotenv==1.0.1
+pandas==2.2.0
 
 
 

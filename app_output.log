@@ -1,0 +1,86 @@
+ * Serving Flask app 'flask_app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.1.198:5001
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [19/May/2025 19:17:25] "HEAD / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:18:27] "GET /simple HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:18:27] "GET /static/css/style.css HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:18:27] "GET /static/js/app.js HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:18:27] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+127.0.0.1 - - [19/May/2025 19:18:27] "GET /api/persons HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:18:27] "GET /api/diseases HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:18:40] "POST /api/persons HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:18:50] "POST /api/relationships HTTP/1.1" 200 -
+[2025-05-19 19:18:57,073] ERROR in app: Exception on /api/graph/mo [GET]
+Traceback (most recent call last):
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/app/flask_app.py", line 196, in get_graph_data
+    graph_visualizer.build_graph()
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/app/main.py", line 233, in build_graph
+    raise ValueError("No data to visualize.")
+ValueError: No data to visualize.
+127.0.0.1 - - [19/May/2025 19:18:57] "[35m[1mGET /api/graph/mo HTTP/1.1[0m" 500 -
+[2025-05-19 19:19:00,466] ERROR in app: Exception on /api/graph/Mohamed AL-Kaisi [GET]
+Traceback (most recent call last):
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/app/flask_app.py", line 196, in get_graph_data
+    graph_visualizer.build_graph()
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/app/main.py", line 233, in build_graph
+    raise ValueError("No data to visualize.")
+ValueError: No data to visualize.
+127.0.0.1 - - [19/May/2025 19:19:00] "[35m[1mGET /api/graph/Mohamed%20AL-Kaisi HTTP/1.1[0m" 500 -
+127.0.0.1 - - [19/May/2025 19:19:03] "GET /api/graph/Mohamed HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:19:03] "GET /api/persons/Mohamed/diseases HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:19:13] "GET /doctor HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:19:13] "GET /static/css/doctor.css HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:19:13] "GET /static/js/doctor.js HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:19:13] "GET /api/diseases HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:19:19] "GET /api/persons HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:29:13] "GET /simple HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:29:13] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [19/May/2025 19:29:13] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [19/May/2025 19:29:13] "GET /api/persons HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:29:13] "GET /api/diseases HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:29:21] "[33mGET /doctors HTTP/1.1[0m" 404 -
+127.0.0.1 - - [19/May/2025 19:29:24] "GET /doctor HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:29:24] "[36mGET /static/css/doctor.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [19/May/2025 19:29:24] "[36mGET /static/js/doctor.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [19/May/2025 19:29:24] "GET /api/diseases HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:31:47] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:31:47] "GET /static/css/hospital.css HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:31:47] "GET /static/js/hospital.js HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:31:48] "GET /api/diseases HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:32:05] "GET /simple HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:32:05] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [19/May/2025 19:32:05] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [19/May/2025 19:32:05] "GET /api/persons HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:32:05] "GET /api/diseases HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:32:14] "GET /doctor HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:32:14] "[36mGET /static/css/doctor.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [19/May/2025 19:32:14] "[36mGET /static/js/doctor.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [19/May/2025 19:32:14] "GET /api/diseases HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:39:53] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:39:53] "[36mGET /static/css/hospital.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [19/May/2025 19:39:53] "[36mGET /static/js/hospital.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [19/May/2025 19:39:53] "GET /api/diseases HTTP/1.1" 200 -

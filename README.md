@@ -47,7 +47,7 @@ graph LR
     end
 
     subgraph MedGraph System
-        D[Web Interface<br/>Gradio]
+        D[Web Interface<br/>Flask + JavaScript]
         E[Application Core<br/>Python]
         F[Graph Database<br/>Neo4j]
     end
@@ -102,11 +102,41 @@ graph TD
     style D4 fill:#f8bbd0
 ```
 
+### Screenshots
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/screenshots/hospital_portal.png" alt="Hospital Portal" width="400"/>
+      <br/>
+      <strong>Hospital Portal</strong>
+      <br/>
+      <em>Main dashboard for patient and disease management</em>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/simple_interface.png" alt="Simple Interface" width="400"/>
+      <br/>
+      <strong>Simple Interface</strong>
+      <br/>
+      <em>Streamlined view with graph visualization</em>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2">
+      <img src="docs/screenshots/doctor_portal.png" alt="Doctor Portal" width="400"/>
+      <br/>
+      <strong>Doctor Portal</strong>
+      <br/>
+      <em>Advanced features for medical professionals</em>
+    </td>
+  </tr>
+</table>
+
 ### Key Features
 
 - **Medical Data Management**: Create and manage patient records and disease information
 - **Relationship Mapping**: Establish and track patient-disease relationships
-- **Interactive Visualisation**: Real-time graph visualisation using Pyvis and Gradio
+- **Interactive Visualisation**: Real-time graph visualisation using JavaScript and Vis.js
 - **Query Capabilities**: Fetch and display disease information for specific patients
 - **Containerised Deployment**: Docker support for easy deployment
 - **Automated Testing**: Comprehensive test suite with pytest
@@ -117,7 +147,7 @@ graph TD
 ```mermaid
 graph TB
     subgraph "Frontend"
-        A[Gradio Web Interface]
+        A[JavaScript Web Interface]
     end
 
     subgraph "Application Layer"
@@ -153,25 +183,25 @@ graph TB
 ```mermaid
 sequenceDiagram
     participant User
-    participant Gradio
+    participant WebUI
     participant App
     participant Neo4j
     participant Visualiser
 
-    User->>Gradio: Input patient/disease data
-    Gradio->>App: Process request
+    User->>WebUI: Input patient/disease data
+    WebUI->>App: API request
     App->>Neo4j: Create nodes/relationships
     Neo4j-->>App: Confirm creation
-    App-->>Gradio: Return status
-    Gradio-->>User: Display result
+    App-->>WebUI: Return JSON response
+    WebUI-->>User: Display result
 
-    User->>Gradio: Request visualisation
-    Gradio->>App: Fetch graph data
+    User->>WebUI: Request visualisation
+    WebUI->>App: Fetch graph data
     App->>Neo4j: Query relationships
     Neo4j-->>App: Return graph data
     App->>Visualiser: Generate graph
-    Visualiser-->>Gradio: Return HTML
-    Gradio-->>User: Display graph
+    Visualiser-->>WebUI: Return JSON
+    WebUI-->>User: Render graph
 ```
 
 ### Graph Data Model
@@ -197,7 +227,9 @@ erDiagram
 |-----------|------------|---------|----------|
 | Language | Python | 3.9+ | Core application development |
 | Database | Neo4j | 4.x+ | Graph database for relationships |
-| Web Framework | Gradio | 4.19.2 | Modern web interface |
+| Backend Framework | Flask | 3.0.0 | REST API server |
+| Frontend | JavaScript | ES6+ | Interactive web interface |
+| UI Framework | Bootstrap | 5.3.2 | Responsive UI components |
 | Graph Visualisation | Pyvis | 0.3.2 | Interactive graph rendering |
 | Graph Library | NetworkX | 3.2.1 | Graph algorithms and manipulation |
 | Testing | Pytest | 8.3.4 | Unit and integration testing |
@@ -278,7 +310,7 @@ NEO4J_PASSWORD=your-password
 
 # Application Configuration
 APP_HOST=0.0.0.0
-APP_PORT=8501
+APP_PORT=5001
 DEBUG=False
 ```
 
@@ -342,10 +374,14 @@ You have several options for setting up Neo4j:
 ### Option 1: Run Locally
 
 ```bash
-python app/gradio_app.py
+# Using the run script
+./run_app.sh
+
+# Or directly
+python app/flask_app.py
 ```
 
-The application will be available at `http://localhost:8501`.
+The application will be available at `http://localhost:5001`.
 
 ### Option 2: Run with Docker
 
@@ -358,7 +394,7 @@ The application will be available at `http://localhost:8501`.
 2. **Run the Docker container**:
 
    ```bash
-   docker run -p 8501:8501 --env-file .env medgraph
+   docker run -p 5001:5001 --env-file .env medgraph
    ```
 
 ## Usage
@@ -367,22 +403,26 @@ The application will be available at `http://localhost:8501`.
 
 1. **Development Mode**
    ```bash
-   python app/gradio_app.py
+   # Using the run script
+   ./run_app.sh
+
+   # Or directly
+   python app/flask_app.py
    ```
 
 2. **Docker Mode**
    ```bash
-   docker run -p 8501:8501 --env-file .env medgraph
+   docker run -p 5001:5001 --env-file .env medgraph
    ```
 
 3. **Production Mode**
    ```bash
-   export GRADIO_SERVER_NAME=0.0.0.0
-   export GRADIO_SERVER_PORT=8501
-   python app/gradio_app.py
+   export APP_HOST=0.0.0.0
+   export APP_PORT=5001
+   python app/flask_app.py
    ```
 
-Access the application at `http://localhost:8501`
+Access the application at `http://localhost:5001`
 
 ### Features Overview
 
@@ -552,21 +592,44 @@ Set these secrets in your GitHub repository settings:
 MedGraph/
 ├── app/                      # Application code
 │   ├── main.py              # Core logic and Neo4j interactions
-│   ├── gradio_app.py        # Gradio web interface
-│   ├── GraphVisualizer.py   # Graph visualisation logic
+│   ├── flask_app.py         # Flask API backend
+│   ├── medical_features.py  # Medical-specific functions
+│   ├── rag_assistant.py     # RAG functionality
+│   ├── visualizations.py    # Visualization utilities
 │   └── __init__.py          # Package initialisation
+├── frontend/                 # Web interface
+│   ├── hospital.html        # Hospital management portal
+│   ├── doctor.html          # Doctor portal
+│   ├── index.html           # Simple interface
+│   └── static/              # Static assets
+│       ├── css/             # Stylesheets
+│       │   ├── style.css    # Simple interface styles
+│       │   ├── hospital.css # Hospital portal styles
+│       │   └── doctor.css   # Doctor portal styles
+│       └── js/              # JavaScript
+│           ├── app.js       # Simple interface logic
+│           ├── hospital.js  # Hospital portal logic
+│           └── doctor.js    # Doctor portal logic
+├── data/                     # Data files
+│   └── diseases_data.py     # Disease dataset
+├── scripts/                  # Utility scripts
+│   └── load_diseases.py     # Data loader script
 ├── tests/                    # Test suite
 │   ├── test_main.py         # Unit tests
 │   └── __init__.py          # Package initialisation
 ├── lib/                      # Third-party libraries
 │   ├── vis-9.1.2/           # Vis.js for graph visualisation
 │   └── tom-select/          # Tom Select for dropdowns
+├── docs/                     # Documentation
+│   └── screenshots/         # UI screenshots
 ├── .github/                  # GitHub Actions
 │   └── workflows/
 │       └── python-app.yml   # CI/CD pipeline
 ├── Dockerfile               # Container configuration
 ├── requirements.txt         # Python dependencies
-├── .env.example            # Environment variable template
+├── setup.py                 # Setup script
+├── run_app.sh              # Application launcher
+├── .env                     # Environment variables
 ├── LICENCE                 # MIT Licence
 └── README.md               # This file
 ```
@@ -599,7 +662,7 @@ MedGraph/
      medgraph:
        build: .
        ports:
-         - "8501:8501"
+         - "5001:5001"
        environment:
          NEO4J_URI: bolt://neo4j:7687
          NEO4J_USERNAME: neo4j
@@ -673,15 +736,15 @@ export PYTHONPATH=$PYTHONPATH:$(pwd)
 
 #### 3. Port Already in Use
 ```
-Error: Port 8501 is already in use
+Error: Port 5001 is already in use
 ```
 
 **Solution:**
 ```bash
 # Find process using port
-lsof -i :8501
+lsof -i :5001
 # Kill process or use different port
-export APP_PORT=8502
+export APP_PORT=5002
 ```
 
 ### Debug Mode
@@ -690,7 +753,7 @@ Enable debug logging:
 ```bash
 export DEBUG=True
 export LOG_LEVEL=DEBUG
-python app/gradio_app.py
+python app/flask_app.py
 ```
 
 ## Contributing
@@ -755,7 +818,8 @@ This project is licenced under the MIT Licence - see the [LICENCE](LICENCE) file
 ## Acknowledgments
 
 - [Neo4j](https://neo4j.com/) for the graph database
-- [Gradio](https://gradio.app/) for the web framework
+- [Flask](https://flask.palletsprojects.com/) for the backend API
+- [Bootstrap](https://getbootstrap.com/) for UI components
 - [Pyvis](https://pyvis.readthedocs.io/) for graph visualisation
 - [GitHub Actions](https://github.com/features/actions) for CI/CD
 
@@ -832,12 +896,12 @@ If you encounter any issues or have questions, please:
 
 ### Documentation
 - [Neo4j Documentation](https://neo4j.com/docs/)
-- [Gradio Documentation](https://gradio.app/docs/)
+- [Flask Documentation](https://flask.palletsprojects.com/)
 - [Pyvis Documentation](https://pyvis.readthedocs.io/)
 
 ### Tutorials
 - [Getting Started with Graph Databases](https://neo4j.com/graph-database/)
-- [Building Interactive Apps with Gradio](https://gradio.app/getting_started/)
+- [Building Web Apps with Flask](https://flask.palletsprojects.com/tutorial/)
 - [Graph Visualisation Best Practices](https://www.data-to-viz.com/graph/network.html)
 
 ### Community
@@ -858,7 +922,7 @@ Developed by the MedGraph Team
 
 ### Special Thanks
 - Neo4j team for the excellent graph database
-- Gradio team for the intuitive web framework
+- Flask and JavaScript communities for the web stack
 - Open source community for continuous support
 
 ---

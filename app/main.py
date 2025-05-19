@@ -1,7 +1,7 @@
 import networkx as nx
 from pyvis.network import Network
 from neo4j import GraphDatabase
-import streamlit as st  # Import Streamlit
+# Removed Streamlit import - using Flask instead
 import os
 from dotenv import load_dotenv
 
@@ -112,6 +112,87 @@ def get_all_diseases():
         print(f"Error fetching diseases: {str(e)}")
         return []
 
+def search_patients(search_term):
+    """Search patients by name."""
+    try:
+        with driver.session() as session:
+            query = """
+                MATCH (p:Person)
+                WHERE toLower(p.name) CONTAINS toLower($search_term)
+                RETURN p.name AS name, p.age AS age
+                ORDER BY p.name
+                LIMIT 20
+            """
+            result = session.run(query, search_term=search_term)
+            return [{"name": record["name"], "age": record["age"]} for record in result]
+    except Exception as e:
+        print(f"Error searching patients: {str(e)}")
+        return []
+
+def get_patient_details(name):
+    """Get detailed patient information including all diseases."""
+    try:
+        with driver.session() as session:
+            # Get patient basic info
+            patient_query = """
+                MATCH (p:Person {name: $name})
+                RETURN p.name AS name, p.age AS age
+            """
+            patient_result = session.run(patient_query, name=name).single()
+
+            if not patient_result:
+                return None
+
+            patient_info = {
+                "name": patient_result["name"],
+                "age": patient_result["age"],
+                "diseases": []
+            }
+
+            # Get all diseases for this patient
+            diseases_query = """
+                MATCH (p:Person {name: $name})-[:HAS_DISEASE]->(d:Disease)
+                RETURN d.name AS name, d.description AS description
+                ORDER BY d.name
+            """
+            diseases_result = session.run(diseases_query, name=name)
+
+            for record in diseases_result:
+                patient_info["diseases"].append({
+                    "name": record["name"],
+                    "description": record["description"]
+                })
+
+            return patient_info
+    except Exception as e:
+        print(f"Error fetching patient details: {str(e)}")
+        return None
+
+def delete_relationship(person_name, disease_name):
+    """Delete a relationship between person and disease."""
+    try:
+        with driver.session() as session:
+            # Check if the relationship exists
+            check_query = """
+                MATCH (p:Person {name: $person_name})-[r:HAS_DISEASE]->(d:Disease {name: $disease_name})
+                RETURN COUNT(r) AS count
+            """
+            result = session.run(check_query, person_name=person_name, disease_name=disease_name)
+
+            if result.single()['count'] == 0:
+                return False, f"No relationship exists between '{person_name}' and '{disease_name}'"
+
+            # Delete the relationship
+            delete_query = """
+                MATCH (p:Person {name: $person_name})-[r:HAS_DISEASE]->(d:Disease {name: $disease_name})
+                DELETE r
+            """
+            session.run(delete_query, person_name=person_name, disease_name=disease_name)
+
+            return True, f"Successfully removed relationship between '{person_name}' and '{disease_name}'"
+    except Exception as e:
+        return False, f"Error deleting relationship: {str(e)}"
+
 
 class GraphVisualizer:
     def __init__(self, person_name):
@@ -149,7 +230,7 @@ class GraphVisualizer:
 
         if len(self.graph.nodes) == 0 or len(self.graph.edges) == 0:
             print("Error: The graph has no nodes or edges.")
-            st.error("No data to visualize.")
+            raise ValueError("No data to visualize.")
 
     def visualize(self):
         """Visualize the graph using Pyvis."""
@@ -157,8 +238,7 @@ class GraphVisualizer:
             # Ensure the graph has nodes and edges before rendering
             if len(self.graph.nodes) == 0 or len(self.graph.edges) == 0:
                 print("Error: The graph has no nodes or edges.")
-                st.error("No data to visualize.")
-                return
+                raise ValueError("No data to visualize.")
 
             # Create a Pyvis network for visualization
             net = Network(height="600px", width="100%", directed=False)
@@ -172,12 +252,11 @@ class GraphVisualizer:
 
             # Check if the file exists
             if os.path.exists(output_path):
-                # Read the generated HTML file and display it in Streamlit
-                with open(output_path, "r") as file:
-                    st.components.v1.html(file.read(), height=600)
+                # Return the path to the generated HTML file
+                return output_path
             else:
-                st.error("Error: Graph HTML file not found.")
+                raise FileNotFoundError("Error: Graph HTML file not found.")
 
         except Exception as e:
             print(f"Error while generating the graph: {e}")
-            st.error("There was an issue generating the graph visualization.")
+            raise Exception(f"There was an issue generating the graph visualization: {e}")

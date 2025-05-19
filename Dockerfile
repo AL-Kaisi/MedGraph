@@ -11,8 +11,8 @@ COPY . /app
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Expose port 8501 for Gradio
+# Expose port 8501 for Flask
 EXPOSE 8501
 
-# Run the Gradio app
-CMD ["python", "app/gradio_app.py"]
+# Run the Flask app
+CMD ["python", "app/flask_app.py"]

@@ -1,6 +1,7 @@
 neo4j
 pytest==8.3.4
-gradio==4.19.2
+flask==3.0.0
+flask-cors==4.0.0
 pyvis==0.3.2
 networkx==3.2.1
 python-dotenv==1.0.1

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedGraph - Medical Knowledge Graph</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Vis.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">MedGraph</a>
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text">Medical Knowledge Graph Application</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Create Patient</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="createPersonForm">
+                            <div class="mb-3">
+                                <label for="personName" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="personName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="personAge" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="personAge" min="1" max="150" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Create Patient</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Create Disease</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="createDiseaseForm">
+                            <div class="mb-3">
+                                <label for="diseaseName" class="form-label">Disease Name</label>
+                                <input type="text" class="form-control" id="diseaseName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="diseaseDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="diseaseDescription" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Create Disease</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">Create Relationship</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="createRelationshipForm">
+                            <div class="mb-3">
+                                <label for="relationPerson" class="form-label">Patient</label>
+                                <select class="form-select" id="relationPerson" required>
+                                    <option value="">Select a patient...</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="relationDisease" class="form-label">Disease</label>
+                                <select class="form-select" id="relationDisease" required>
+                                    <option value="">Select a disease...</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-warning w-100">Create Relationship</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">Patient-Disease Graph</h5>
+                            <div>
+                                <select class="form-select" id="graphPerson" style="width: 200px;">
+                                    <option value="">Select a patient...</option>
+                                </select>
+                                <button class="btn btn-light btn-sm ms-2" id="refreshGraph">Refresh</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="networkGraph" style="height: 600px; border: 1px solid #ccc;"></div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Patient Diseases</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="diseasesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Patient</th>
+                                        <th>Disease</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="diseasesTableBody">
+                                    <tr>
+                                        <td colspan="3" class="text-center">Select a patient to view diseases</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Vis.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

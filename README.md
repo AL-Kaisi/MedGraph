@@ -909,23 +909,4 @@ If you encounter any issues or have questions, please:
 - [Stack Overflow Tag](https://stackoverflow.com/questions/tagged/medgraph)
 - [GitHub Discussions](https://github.com/your-username/MedGraph/discussions)
 
----
-
-## Credits
-
-Developed by the MedGraph Team
-
-### Contributors
-- Lead Developer: [Your Name]
-- UI/UX Design: [Designer Name]
-- Database Architecture: [DBA Name]
-
-### Special Thanks
-- Neo4j team for the excellent graph database
-- Flask and JavaScript communities for the web stack
-- Open source community for continuous support
-
----
-
-**MedGraph** - Transforming medical data into actionable insights through graph technology.
 

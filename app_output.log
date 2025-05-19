@@ -84,3 +84,58 @@ ValueError: No data to visualize.
 127.0.0.1 - - [19/May/2025 19:39:53] "[36mGET /static/css/hospital.css HTTP/1.1[0m" 304 -
 127.0.0.1 - - [19/May/2025 19:39:53] "[36mGET /static/js/hospital.js HTTP/1.1[0m" 304 -
 127.0.0.1 - - [19/May/2025 19:39:53] "GET /api/diseases HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:42:00] "GET /simple HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:42:00] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [19/May/2025 19:42:00] "[36mGET /static/js/app.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [19/May/2025 19:42:00] "GET /api/persons HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:42:00] "GET /api/diseases HTTP/1.1" 200 -
+[2025-05-19 19:42:13,600] ERROR in app: Exception on /api/graph/Mohamed AL-Kaisi [GET]
+Traceback (most recent call last):
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/app/flask_app.py", line 196, in get_graph_data
+    graph_visualizer.build_graph()
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/app/main.py", line 233, in build_graph
+    raise ValueError("No data to visualize.")
+ValueError: No data to visualize.
+127.0.0.1 - - [19/May/2025 19:42:13] "[35m[1mGET /api/graph/Mohamed%20AL-Kaisi HTTP/1.1[0m" 500 -
+[2025-05-19 19:42:16,968] ERROR in app: Exception on /api/graph/mo [GET]
+Traceback (most recent call last):
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask_cors/extension.py", line 176, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/app/flask_app.py", line 196, in get_graph_data
+    graph_visualizer.build_graph()
+  File "/Users/mohamed.al-kaisi/Desktop/MedGraph/app/main.py", line 233, in build_graph
+    raise ValueError("No data to visualize.")
+ValueError: No data to visualize.
+127.0.0.1 - - [19/May/2025 19:42:16] "[35m[1mGET /api/graph/mo HTTP/1.1[0m" 500 -
+127.0.0.1 - - [19/May/2025 19:42:20] "GET /api/graph/Mohamed HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:42:20] "GET /api/persons/Mohamed/diseases HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:42:36] "GET /doctor HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:42:36] "[36mGET /static/css/doctor.css HTTP/1.1[0m" 304 -
+127.0.0.1 - - [19/May/2025 19:42:36] "[36mGET /static/js/doctor.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [19/May/2025 19:42:36] "GET /api/diseases HTTP/1.1" 200 -
+127.0.0.1 - - [19/May/2025 19:42:45] "GET /api/persons/search?q=Mohamed HTTP/1.1" 200 -
+Received notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: bmi)} {position: line: 5, column: 46, offset: 283} for query: '\n                MATCH (p:Person {name: $name})-[:HAS_VITALS]->(v:VitalSigns)\n                RETURN v.blood_pressure AS blood_pressure, v.heart_rate AS heart_rate,\n                       v.temperature AS temperature, v.weight AS weight,\n                       v.height AS height, v.bmi AS bmi, v.recorded_at AS date\n                ORDER BY v.recorded_at DESC\n                LIMIT 5\n            '
+Received notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: resolved)} {position: line: 4, column: 26, offset: 193} for query: '\n                MATCH (p:Person {name: $name})-[:HAS_HISTORY]->(h:MedicalHistory)\n                RETURN h.condition AS condition, h.date_diagnosed AS date_diagnosed,\n                       h.resolved AS resolved, h.notes AS notes\n                ORDER BY h.date_diagnosed DESC\n            '
+Received notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: condition)} {position: line: 3, column: 26, offset: 108} for query: '\n                MATCH (p:Person {name: $name})-[:HAS_HISTORY]->(h:MedicalHistory)\n                RETURN h.condition AS condition, h.date_diagnosed AS date_diagnosed,\n                       h.resolved AS resolved, h.notes AS notes\n                ORDER BY h.date_diagnosed DESC\n            '
+Received notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownRelationshipTypeWarning} {category: UNRECOGNIZED} {title: The provided relationship type is not in the database.} {description: One of the relationship types in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing relationship type is: HAS_HISTORY)} {position: line: 2, column: 50, offset: 50} for query: '\n                MATCH (p:Person {name: $name})-[:HAS_HISTORY]->(h:MedicalHistory)\n                RETURN h.condition AS condition, h.date_diagnosed AS date_diagnosed,\n                       h.resolved AS resolved, h.notes AS notes\n                ORDER BY h.date_diagnosed DESC\n            '
+Received notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownLabelWarning} {category: UNRECOGNIZED} {title: The provided label is not in the database.} {description: One of the labels in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing label name is: MedicalHistory)} {position: line: 2, column: 67, offset: 67} for query: '\n                MATCH (p:Person {name: $name})-[:HAS_HISTORY]->(h:MedicalHistory)\n                RETURN h.condition AS condition, h.date_diagnosed AS date_diagnosed,\n                       h.resolved AS resolved, h.notes AS notes\n                ORDER BY h.date_diagnosed DESC\n            '
+Received notification from DBMS server: {severity: WARNING} {code: Neo.ClientNotification.Statement.UnknownPropertyKeyWarning} {category: UNRECOGNIZED} {title: The provided property key is not in the database} {description: One of the property names in your query is not available in the database, make sure you didn't misspell it or that the label is available when you run this statement in your application (the missing property name is: date_diagnosed)} {position: line: 3, column: 52, offset: 134} for query: '\n                MATCH (p:Person {name: $name})-[:HAS_HISTORY]->(h:MedicalHistory)\n                RETURN h.condition AS condition, h.date_diagnosed AS date_diagnosed,\n                       h.resolved AS resolved, h.notes AS notes\n                ORDER BY h.date_diagnosed DESC\n            '
+127.0.0.1 - - [19/May/2025 19:42:48] "GET /api/patients/Mohamed%20AL-Kaisi/medical-record HTTP/1.1" 200 -

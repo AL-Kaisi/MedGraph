@@ -114,7 +114,7 @@ graph TD
       <em>Main dashboard for patient and disease management</em>
     </td>
     <td align="center">
-      <img src="docs/screenshots/simple_interface.png" alt="Simple Interface" width="400"/>
+      <img src="docs/screenshots/simple.png" alt="Simple Interface" width="400"/>
       <br/>
       <strong>Simple Interface</strong>
       <br/>
